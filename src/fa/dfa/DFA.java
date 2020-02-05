@@ -3,8 +3,7 @@
  */
 package fa.dfa;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import fa.State;
 
@@ -13,31 +12,48 @@ import fa.State;
  *
  */
 public class DFA implements DFAInterface {
+	/**
 	DFAState[] Final = new DFAState[20];
 	DFAState[] StateList = new DFAState[40];
 	DFAState Start;
 	int FinalStatesCount = 0;
 	int TotalStatesCount = 0;
-
+	*/
+	
+	//transition function written as "a0a"
+	//use String as key value containing current DFAState.name and 
+	//concat with transition value, return new DFAState
+	Map<String, DFAState> transitionMap = new HashMap<String, DFAState>();
+	
+	//must use a concrete class that implements java.util.Set interface to represent DFA elements
+	Set<DFAState> finalSet = new HashSet<DFAState>();
+	Set<DFAState> stateSet = new HashSet<DFAState>();
+	DFAState startState;
+	
+	
 	public void addFinalState(String nextToken) {
-		// TODO Auto-generated method stub
+		//working with SET so duplicates will not occur
+		addState(nextToken);
+		finalSet.add(new DFAState(nextToken));
 		
+		//finalSet.add(nextToken);
+		/**
 		Final[FinalStatesCount] = new DFAState(nextToken);
 		FinalStatesCount++;
-		addState(nextToken);
+		addState(nextToken);*/
 		
 	}
 
 	public void addStartState(String startStateName) {
-		// TODO Auto-generated method stub
-		Start = new DFAState(startStateName);
-		
+		startState = new DFAState(startStateName);
 	}
 
 	public void addState(String nextToken) {
-		// TODO Auto-generated method stub
+		stateSet.add(new DFAState(nextToken));
+		
+		/**
 		StateList[TotalStatesCount] = new DFAState(nextToken);
-		TotalStatesCount++;
+		TotalStatesCount++;*/
 		
 	}
 
@@ -83,6 +99,11 @@ public class DFA implements DFAInterface {
 	@Override
 	public State getToState(DFAState from, char onSymb) {
 		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public String toString() {
+		
 		return null;
 	}
 
