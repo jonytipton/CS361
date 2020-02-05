@@ -21,14 +21,15 @@ public class DFA implements DFAInterface {
 	*/
 	
 	//transition function written as "a0a"
-	//use String as key value containing current DFAState.name and 
-	//concat with transition value, return new DFAState
+	//use String as key value containing currentState.name and 
+	//concatenate with transition value, return new DFAState
 	Map<String, DFAState> transitionMap = new HashMap<String, DFAState>();
 	
 	//must use a concrete class that implements java.util.Set interface to represent DFA elements
 	Set<DFAState> finalSet = new HashSet<DFAState>();
 	Set<DFAState> stateSet = new HashSet<DFAState>();
 	DFAState startState;
+	DFAState currentState;
 	
 	
 	public void addFinalState(String nextToken) {
@@ -45,6 +46,7 @@ public class DFA implements DFAInterface {
 	}
 
 	public void addStartState(String startStateName) {
+		addState(startStateName);
 		startState = new DFAState(startStateName);
 	}
 
