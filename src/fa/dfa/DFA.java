@@ -5,8 +5,6 @@ package fa.dfa;
 
 import java.util.*;
 
-import fa.State;
-
 /**
  * @author Johnathon Begg, Jonathan Tipton
  *
@@ -21,13 +19,14 @@ public class DFA implements DFAInterface {
 	*/
 	
 	//Transition functions
-	Map<String, Map<String, String>> transitionMap = new HashMap<>();
+	private Map<String, Map<String, String>> transitionMap = new HashMap<>();
 	//States
-	Set<DFAState> finalStates = new HashSet<>();
-	Set<DFAState> states = new HashSet<>();
-	Set<Character> alphabet = new HashSet<>();
-	DFAState startState;
-	DFAState currentState;
+	private Set<DFAState> finalStates = new HashSet<>();
+	private Set<DFAState> states = new HashSet<>();
+	private DFAState startState;
+	private DFAState currentState;
+	//Alphabet
+	private Set<Character> alphabet = new HashSet<>();
 	
 	/**
 	 * Adds a final state to the DFA
@@ -72,7 +71,7 @@ public class DFA implements DFAInterface {
 
 	/**
 	 * Adds the transition to the DFA's delta data structure
-	 * Adds the alphabet symbol to t he DFA's alphabet set
+	 * Adds the alphabet symbol to the DFA's alphabet set
 	 * @param fromState is the label of the state where the transition starts
 	 * @param onSymb is the symbol from the DFA's alphabet.
 	 * @param toState is the label of the state where the transition ends
@@ -88,18 +87,39 @@ public class DFA implements DFAInterface {
 	}
 
 	/**
-	 * Computes a copy of this DFA
-	 * which language is the complement
-	 * of this DFA's language.
+	 * This method must return the complement of this DFA. 
+	 * That is a new DFA, such as its language is the complement 
+	 * of this DFA’s language. Recall from the slides, that in 
+	 * order to do so, we need to make all final states of this 
+	 * DFA non-final (i.e., regular) states and vice versa.
+	 * 
+	 * swap final and non-final states
 	 * @return a copy of this DFA
 	 */
 	public DFA complement() {
-		// TODO Auto-generated method stub
-		return null;
+		DFA complementDFA = new DFA();
+		complementDFA.alphabet = this.alphabet; //same for complementDFA
+		complementDFA.startState = this.startState; //same for complementDFA
+		
+		Iterator<DFAState> statesIterator = states.iterator();
+		while (statesIterator.hasNext()) {
+			if (!finalStates.contains(statesIterator.next())){
+				complementDFA.addFinalState(statesIterator.next().getName());
+			}
+			else {
+				complementDFA.addState(statesIterator.next().getName());
+			}
+		}
+		/*
+		 * for each element in states set
+		 * check if state is non-final, add to complementDFA.finalStates if non-final
+		 * if final, add to complementDFA.states
+		 */
+		return complementDFA;
 	}
 
 	public boolean accepts(String input) {
-
+			//TODO
 		return false;
 	}
 
@@ -107,7 +127,7 @@ public class DFA implements DFAInterface {
 	 * Getter for Q
 	 * @return a set of states that FA has
 	 */
-	public Set<? extends State> getStates() {
+	public Set<? extends DFAState> getStates() {
 		return states;
 	}
 
@@ -115,7 +135,7 @@ public class DFA implements DFAInterface {
 	 * Getter for F
 	 * @return a set of final states that FA has
 	 */
-	public Set<? extends State> getFinalStates() {
+	public Set<? extends DFAState> getFinalStates() {
 		return finalStates;
 	}
 
@@ -136,9 +156,24 @@ public class DFA implements DFAInterface {
 	}
 
 	
+	//TODO create separate string builder instead of using replaceAll to get correct formatting
+	//need to check instructions for correct format of toString
 	public String toString() {
-		//TODO
-		return null;
+		String abc = alphabet.toString();
+		String test = "";
+		StringTokenizer tk = new StringTokenizer(abc, " ");
+		while(tk.hasMoreTokens()) {
+			test = test+tk.nextToken();
+		}
+		String result = 
+				"Q = { " + states.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\,", "") + " }\n"+
+				"Sigma = { " + alphabet.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\,", "") + " }\n"+
+				"delta = \n" +
+				"q0 = " + startState +
+				"\nF = { " + finalStates.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\,", "") +
+				" }\n";
+		
+		return result;
 	}
 
 

@@ -1,6 +1,8 @@
 package fa.dfa;
 
-public class DFAState extends fa.State {
+import fa.State;
+
+public class DFAState extends State {
 	public DFAState (String name) {
 		this.name = name;
 	}
