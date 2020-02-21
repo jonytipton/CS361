@@ -48,7 +48,6 @@ public class DFA implements DFAInterface {
 		states.add(startState);
 	}
 
-	
 	/**
 	 * Adds a non-final, not initial state to the DFA instance
 	 * @param name is the label of the state 
@@ -67,21 +66,21 @@ public class DFA implements DFAInterface {
 	public  void addTransition (String fromState, char onSymb, String toState) {
 		DFAState aState = null;
 		DFAState bState = null;
-		
-		Iterator<DFAState> iterator = states.iterator();
-		while (iterator.hasNext()) {
+		for (DFAState iterator : states) {
 			//find fromState
-			if (iterator.next().getName() == fromState) {
-				aState = iterator.next();
+			if (iterator.getName().equals(fromState)) {
+				aState = iterator;
+				//System.out.println("found A state");
 			}
 			//find toState
-			if (iterator.next().getName() == toState) {
-				bState = iterator.next();
+			if (iterator.getName().equals(toState)) {
+				bState = iterator;
+				//System.out.println("found b state");
 			}
 		}
 		//add transition to aState
 		aState.addTransition(onSymb, bState);
-		
+		alphabet.add(onSymb);
 	}
 
 	/**
@@ -179,17 +178,35 @@ public class DFA implements DFAInterface {
 	//TODO create separate string builder instead of using replaceAll to get correct formatting
 	//need to check instructions for correct format of toString
 	public String toString() {
-		String abc = alphabet.toString();
-		String test = "";
-		StringTokenizer tk = new StringTokenizer(abc, " ");
-		while(tk.hasMoreTokens()) {
-			test = test+tk.nextToken();
-		}
+		//add first part of string
 		String result = 
 				"Q = { " + states.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\,", "") + " }\n"+
 				"Sigma = { " + alphabet.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\,", "") + " }\n"+
-				"delta = \n" +
-				"q0 = " + startState +
+				"delta = \n\t"; 
+		
+		for(char letter : alphabet) {
+			result += "\t" + letter;
+		}
+		//add transitions
+		//iteratre through each state
+		for(DFAState iter: states) {
+			result += "\n\t" + iter.getName();
+			//print state
+			for(char route : alphabet) {
+				//print next char
+				result += "\t";
+				DFAState temp = iter.nextState(route);
+				result += temp.getName();
+				
+			}
+			//print next line
+		}
+		
+		
+		//add end of string
+		
+		
+		result +="\nq0 = " + startState +
 				"\nF = { " + finalStates.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\,", "") +
 				" }\n";
 		

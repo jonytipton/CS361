@@ -13,7 +13,7 @@ public class DFAState extends State {
 	}
 	
 	public void addTransition(char onSymb, DFAState toState) {
-		traverseMap.put(onSymb, toState);
+		traverseMap.put(Character.valueOf(onSymb), toState);
 	}
 	
 	public DFAState nextState(char route) {
