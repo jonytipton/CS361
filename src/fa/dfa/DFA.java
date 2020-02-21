@@ -20,12 +20,12 @@ public class DFA implements DFAInterface {
 	
 	
 	//States
-	private Set<DFAState> finalStates = new HashSet<>();
-	private Set<DFAState> states = new HashSet<>();
+	private Set<DFAState> finalStates = new LinkedHashSet<>();
+	private Set<DFAState> states = new LinkedHashSet<>();
 	private DFAState startState;
 	private DFAState currentState;
 	//Alphabet
-	private Set<Character> alphabet = new HashSet<>();
+	private Set<Character> alphabet = new LinkedHashSet<>();
 	
 	/**
 	 * Adds a final state to the DFA
