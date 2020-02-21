@@ -20,12 +20,12 @@ public class DFA implements DFAInterface {
 	
 	
 	//States
-	private Set<DFAState> finalStates = new LinkedHashSet<>();
-	private Set<DFAState> states = new LinkedHashSet<>();
-	private DFAState startState;
-	private DFAState currentState;
+	public Set<DFAState> finalStates = new LinkedHashSet<>();
+	public  Set<DFAState> states = new LinkedHashSet<>();
+	public DFAState startState;
+	public DFAState currentState;
 	//Alphabet
-	private Set<Character> alphabet = new LinkedHashSet<>();
+	public  Set<Character> alphabet = new LinkedHashSet<>();
 	
 	/**
 	 * Adds a final state to the DFA
@@ -98,20 +98,16 @@ public class DFA implements DFAInterface {
 		complementDFA.alphabet = this.alphabet; //same for complementDFA
 		complementDFA.startState = this.startState; //same for complementDFA
 		
-		Iterator<DFAState> statesIterator = states.iterator();
-		while (statesIterator.hasNext()) {
-			if (!finalStates.contains(statesIterator.next())){
-				complementDFA.addFinalState(statesIterator.next().getName());
+		for(DFAState iter: states) {
+			//if it is a final state, it is no longer final
+			if(finalStates.contains(iter)) {
+				complementDFA.states.add(iter);
 			}
 			else {
-				complementDFA.addState(statesIterator.next().getName());
+				complementDFA.finalStates.add(iter);
+				complementDFA.states.add(iter);
 			}
 		}
-		/*
-		 * for each element in states set
-		 * check if state is non-final, add to complementDFA.finalStates if non-final
-		 * if final, add to complementDFA.states
-		 */
 		return complementDFA;
 	}
 	
@@ -119,13 +115,21 @@ public class DFA implements DFAInterface {
 	public boolean accepts(String input) {
 		currentState = startState;
 		boolean accepts = false;
+		//if string is "e"mpty dont traverse
+		if(input.equals("e") && finalStates.contains(currentState)) {
+			accepts = true;
+		}
+		//print starting state
 		while(input.length()>0) {
+			//System.out.println(currentState.getName() + " :" + input);
 			//get first character as next route to traverse
 			char route = input.charAt(0);
 			
 			//remove first character from input string
 			//this will allow for tracking remaining input
 			input = input.substring(1);
+			
+			
 			
 			//retrive next state from current state
 			//useing the map
@@ -134,6 +138,7 @@ public class DFA implements DFAInterface {
 			//if no more input
 			//&& current state is final 
 			if(input.length() ==0 && finalStates.contains(currentState)) {
+				//System.out.println("Final State: " + currentState.getName() + " reached");
 				accepts = true;
 			}
 			
