@@ -18,8 +18,7 @@ public class DFA implements DFAInterface {
 	int TotalStatesCount = 0;
 	*/
 	
-	//Transition functions
-	private Map<String, Map<String, String>> transitionMap = new HashMap<>();
+	
 	//States
 	private Set<DFAState> finalStates = new HashSet<>();
 	private Set<DFAState> states = new HashSet<>();
@@ -37,13 +36,6 @@ public class DFA implements DFAInterface {
 		DFAState newFinal = new DFAState(name);
 		finalStates.add(newFinal);
 		states.add(newFinal);
-		
-		//addState(nextToken);
-		//finalSet.add(nextToken);
-		/**
-		Final[FinalStatesCount] = new DFAState(nextToken);
-		FinalStatesCount++;
-		addState(nextToken);*/
 	}
 
 	
@@ -63,10 +55,6 @@ public class DFA implements DFAInterface {
 	 */
 	public void addState(String name) {
 		states.add(new DFAState(name));
-		
-		/**
-		StateList[TotalStatesCount] = new DFAState(nextToken);
-		TotalStatesCount++;*/
 	}
 
 	/**
@@ -77,13 +65,23 @@ public class DFA implements DFAInterface {
 	 * @param toState is the label of the state where the transition ends
 	 */
 	public  void addTransition (String fromState, char onSymb, String toState) {
-		Map<String, String> newTransition = new HashMap<>();
-		//Create onSymb -> toState transition
-		newTransition.put(Character.toString(onSymb), toState);
-		//create fromState -> newTransition transition
-		transitionMap.put(fromState, newTransition);	
-		//add onSymb to alphabet set
-		alphabet.add(onSymb);
+		DFAState aState = null;
+		DFAState bState = null;
+		
+		Iterator<DFAState> iterator = states.iterator();
+		while (iterator.hasNext()) {
+			//find fromState
+			if (iterator.next().getName() == fromState) {
+				aState = iterator.next();
+			}
+			//find toState
+			if (iterator.next().getName() == toState) {
+				bState = iterator.next();
+			}
+		}
+		//add transition to aState
+		aState.addTransition(onSymb, bState);
+		
 	}
 
 	/**
@@ -117,10 +115,32 @@ public class DFA implements DFAInterface {
 		 */
 		return complementDFA;
 	}
-
+	
+	//returns true if the laguage accepts the string
 	public boolean accepts(String input) {
-			//TODO
-		return false;
+		currentState = startState;
+		boolean accepts = false;
+		while(input.length()>0) {
+			//get first character as next route to traverse
+			char route = input.charAt(0);
+			
+			//remove first character from input string
+			//this will allow for tracking remaining input
+			input = input.substring(1);
+			
+			//retrive next state from current state
+			//useing the map
+			currentState = getToState(currentState, route);
+			
+			//if no more input
+			//&& current state is final 
+			if(input.length() ==0 && finalStates.contains(currentState)) {
+				accepts = true;
+			}
+			
+		}
+		
+		return accepts;
 	}
 
 	/**
@@ -185,8 +205,8 @@ public class DFA implements DFAInterface {
 	 * @return the sink state.
 	 */
 	public DFAState getToState(DFAState from, char onSymb) {
-		return null;
-		// TODO Auto-generated method stub
+		DFAState nextState = from.nextState(onSymb);
+		return nextState;
 	}
 
 }
