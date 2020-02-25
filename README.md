@@ -16,7 +16,6 @@ Compile dfa package:
 ```
 $ javac fa/dfa/*.java
 ```
-then:
 
 Compile fa package:
 ```
