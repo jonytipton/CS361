@@ -26,7 +26,7 @@ Run the project (from src directory):
 ```
 $ java fa.dfa.DFADriver /path/to/input.txt
 ```
-input.txt can be any of the provided test files located under the test directory,
+input.txt can be any of the provided test files located under the tests directory,
 or a new DFA can be created using the following format in a new .txt file:
 * 1st line contains the names of the final state, i.e., elements of F. The names are separated by white space. Can be empty if there are no final states.
 * 2nd line contains the name of the start state, i.e., q0
