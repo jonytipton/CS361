@@ -13,6 +13,7 @@ This Java application simulates a DFA (Deterministic Finite Automata).
 To compile this project, first navigate to the src folder then:
 
 Compile dfa package:
+'''
 $ javac fa/dfa/*.java
 
 then:
