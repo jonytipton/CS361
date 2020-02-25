@@ -13,18 +13,20 @@ This Java application simulates a DFA (Deterministic Finite Automata).
 To compile this project, first navigate to the src folder then:
 
 Compile dfa package:
-'''
+```
 $ javac fa/dfa/*.java
-
+```
 then:
 
 Compile fa package:
+```
 $ javac fa/*.java
-
+```
 
 Run the project (from src directory):
+```
 $ java fa.dfa.DFADriver /path/to/input.txt
-
+```
 input.txt can be any of the provided test files located under the test directory,
 or a new DFA can be created using the following format in a new .txt file:
 * 1st line contains the names of the final state, i.e., elements of F. The names are separated by white space. Can be empty if there are no final states.
